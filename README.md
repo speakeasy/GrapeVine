@@ -14,4 +14,7 @@ Planned features:
 * Bots randomly follow people, followers for each bot stored in db
 * Bots randomly post to who they are @following once, list for each bot stored in db, selected at random
 
+* Ability to add http and socks proxy lists for bots to post
+* Ability to detect banned bots, rate limiting etc.
+
 * Any other features that can be thought of.
