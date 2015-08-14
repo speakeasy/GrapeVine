@@ -5,6 +5,18 @@
     <artifactId>GrapeVine</artifactId>
     <version>0.1a-SNAPSHOT</version>
     <packaging>jar</packaging>
+    <dependencies>
+        <dependency>
+            <groupId>org.xerial</groupId>
+            <artifactId>sqlite-jdbc</artifactId>
+            <version>3.8.11.1</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+            <version>2.3.1</version>
+        </dependency>
+    </dependencies>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>1.7</maven.compiler.source>

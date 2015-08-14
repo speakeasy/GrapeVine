@@ -1,5 +1,7 @@
 package org.speakeasy.grapevine;
 
+import java.io.File;
+
 /**
  *
  * @author speakeasy
@@ -9,6 +11,9 @@ public class Main implements Runnable {
     private static Main grapevine;
     private static String[] args;
     private static boolean running;
+    private static File database;
+    private static File cwd;
+    private static File fimport;
     private int tickCount;
 
     /**
@@ -31,7 +36,7 @@ public class Main implements Runnable {
             int j = 0;
             while (j <= i) {
                 if (args[j].startsWith("-")) {
-                    if(j < i && args[j + 1].startsWith("-")) {
+                    if (j < i && args[j + 1].startsWith("-")) {
                         processArg(args[j]);
                     } else if (j < i && !(args[j + 1].startsWith("-"))) {
                         processArg(args[j], args[j + 1]);
@@ -50,19 +55,63 @@ public class Main implements Runnable {
     }
 
     private void processArg(String arga, String argb) {
-        if(argb != null) {
-            
+        if (argb != null) {
+            switch (arga) {
+                case "-d": {
+                    setDatabase(argb);
+                    break;
+                }
+                case "--database": {
+                    setDatabase(argb);
+                    break;
+                }
+                case "-f": {
+                    importFile(argb);
+                    break;
+                }
+                case "--import": {
+                    importFile(argb);
+                    break;
+                }
+                case "-p": {
+                    importPyFile(argb);
+                    break;
+                }
+                case "--pyimport": {
+                    importPyFile(argb);
+                    break;
+                }
+                case "-i": {
+                    break;
+                }
+                case "--interactive": {
+                    break;
+                }
+                default: {
+                    printHelp();
+                }
+            }
+
         } else {
-            switch(arga) {
-                case "-h" : {printHelp();}
-                default : {;}
+            switch (arga) {
+                case "-h": {
+                    printHelp();
+                    break;
+                }
+                case "--help": {
+                    printHelp();
+                    break;
+                }
+                default: {
+                    printHelp();
+                }
             }
         }
     }
-    
+
     private void printHelp() {
-        System.out.println("GrapeVine 2015 by speakeasy");
-        System.out.println("Usage: java -jar grapevine.jar [options]");
+        System.out.println("GrapeVine making sure a little birdie told you since 2015\nby speakeasy");
+        System.out.println("Usage: java -jar grapevine.jar [options]\n");
         System.out.println("Options:");
         System.out.println("  -d, --database     : The database to use.");
         System.out.println("  -f, --import       : File to import bot from as email:password list.");
@@ -71,6 +120,18 @@ public class Main implements Runnable {
         System.out.println("  -h,   --help       : Print this help.");
         System.out.println("\nDone.\n");
         running = false;
+    }
+
+    private void setDatabase(String dbase) {
+        ;
+    }
+
+    public void importFile(String file) {
+        ;
+    }
+
+    public void importPyFile(String file) {
+        ;
     }
 
     @Override
