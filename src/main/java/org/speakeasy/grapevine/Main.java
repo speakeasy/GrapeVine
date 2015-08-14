@@ -10,11 +10,12 @@ public class Main implements Runnable {
 
     private static Main grapevine;
     private static String[] args;
-    private static boolean running;
-    private static File database;
     private static final File cwd = new File(System.getProperty("user.dir"));
+    private static File database;
+    private static File proxyList;
     private static File fimport;
-    private static boolean isPyImport, doImport = false;
+    private static boolean running, isPyImport, doImport, useProxies = false;
+
     private int tickCount;
 
     /**
@@ -27,8 +28,8 @@ public class Main implements Runnable {
     }
 
     private void init() {
-        handleArgs();
         running = true;
+        handleArgs();
     }
 
     private void handleArgs() {
@@ -56,7 +57,7 @@ public class Main implements Runnable {
     }
 
     private void processArg(String arga, String argb) {
-        if (argb != null) {
+        if (argb != null && argb != "") {
             switch (arga) {
                 case "-d": {
                     setDatabase(argb);
@@ -66,16 +67,20 @@ public class Main implements Runnable {
                     setDatabase(argb);
                     break;
                 }
+                case "-l": {
+                    importProxies(argb);
+                    break;
+                }
+                case "-proxies": {
+                    importProxies(argb);
+                    break;
+                }
                 case "-f": {
                     importFile(argb);
                     break;
                 }
                 case "--import": {
                     importFile(argb);
-                    break;
-                }
-                case "-p": {
-                    importPyFile(argb);
                     break;
                 }
                 case "--pyimport": {
@@ -115,8 +120,9 @@ public class Main implements Runnable {
         System.out.println("Usage: java -jar grapevine.jar [options]\n");
         System.out.println("Options:");
         System.out.println("  -d, --database     : The database to use.");
+        System.out.println("  -l, --proxies      : List of working proxies to use.");
         System.out.println("  -f, --import       : File to import bot from as email:password list.");
-        System.out.println("  -p, --pyimport     : File to import bot from python twitter bot.");
+        System.out.println("      --pyimport     : File to import bot from python twitter bot.");
         System.out.println("  -i, --interactive  : Start in interactive mode (not implimented yet.)");
         System.out.println("  -h,   --help       : Print this help.");
         System.out.println("\nDone.\n");
@@ -125,6 +131,25 @@ public class Main implements Runnable {
 
     private void setDatabase(String dbase) {
         ;
+    }
+
+    public void importProxies(String file) {
+        if (proxyList != null) {
+            System.out.println("Please specify only one proxy file.\nExiting.");
+            quit();
+            return;
+        }
+        if (file == null) {
+            System.out.println("Please specify a proxy file.\nExiting.");
+            quit();
+            return;
+        }
+        proxyList = new File(cwd.getAbsolutePath() + file);
+        if (!proxyList.canRead()) {
+            System.out.println("Cannot read file: " + file + "\nExiting.");
+            quit();
+        }
+        useProxies = true;
     }
 
     public void importFile(String file) {
