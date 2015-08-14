@@ -12,8 +12,9 @@ public class Main implements Runnable {
     private static String[] args;
     private static boolean running;
     private static File database;
-    private static File cwd;
+    private static final File cwd = new File(System.getProperty("user.dir"));
     private static File fimport;
+    private static boolean isPyImport, doImport = false;
     private int tickCount;
 
     /**
@@ -127,11 +128,41 @@ public class Main implements Runnable {
     }
 
     public void importFile(String file) {
-        ;
+        if (fimport != null) {
+            System.out.println("Please specify only one import file.\nExiting.");
+            quit();
+            return;
+        }
+        if (file == null) {
+            System.out.println("Please specify an import file.\nExiting.");
+            quit();
+            return;
+        }
+        fimport = new File(cwd.getAbsolutePath() + file);
+        if (!fimport.canRead()) {
+            System.out.println("Cannot read file: " + file + "\nExiting.");
+            quit();
+        }
+        doImport = true;
     }
 
     public void importPyFile(String file) {
-        ;
+        if (fimport != null) {
+            System.out.println("Please specify only one import file.\nExiting.");
+            quit();
+            return;
+        }
+        if (file == null) {
+            System.out.println("Please specify an import file.\nExiting.");
+            quit();
+            return;
+        }
+        fimport = new File(cwd.getAbsolutePath() + file);
+        if (!fimport.canRead()) {
+            System.out.println("Cannot read file: " + file + "\nExiting.");
+            quit();
+        }
+        isPyImport = doImport = true;
     }
 
     @Override
