@@ -1,5 +1,7 @@
 package org.speakeasy.grapevine.flock;
 
+import java.util.HashMap;
+
 /**
  *
  * @author speakeasy
@@ -16,6 +18,15 @@ public class Bird {
     private String consumerToken = ""; // Twitter API Consumer Token.
     private String consumerSecret = ""; // Twitter API Consumer Secret.
     private String botName = ""; // Twitter account name (Case sensitive.)
+    private HashMap<Integer, String> follow; // list of who bot is to follow.
+    private HashMap<Integer, String> followGroup; // list of "group" users to repost or generate similar posts to.
+    private HashMap<Integer, String> followed; // list of users that are followed.
+    private HashMap<Integer, String> following; // list of users following bot.
+    private HashMap<Integer, String> usersMuted; // list of users who are muted.
+    private HashMap<Integer, String> usersUnMuted; // list of users who are not muted.
+    private HashMap<Integer, String> usersKeepUnmuted; // list of users to never mute.
+    private static int followBackoffMin = 42; // The minimum amount of time to wait before following a user.
+    private static int followBackoffMax = 255; // The maximum amount of time to wait before following a user.
 
     public Bird(String email, String password) {
         this.email = email;
@@ -45,43 +56,43 @@ public class Bird {
     public int getId() {
         return this.id;
     }
-    
+
     public String getOAuthToken() {
         return this.oAuthToken;
     }
-    
+
     public String getOAuthSecret() {
         return this.oAuthSecret;
     }
-    
+
     public String getConsumerToken() {
         return this.consumerToken;
     }
-    
+
     public String getConsumerSecret() {
         return this.consumerSecret;
     }
-    
+
     public String getName() {
         return this.botName;
     }
-    
+
     public void setOAuthToken(String token) {
         this.oAuthToken = token;
     }
-    
+
     public void setOAuthSecret(String secret) {
         this.oAuthSecret = secret;
     }
-    
+
     public void setConsumerToken(String token) {
         this.consumerToken = token;
     }
-    
+
     public void setConsumerSecret(String secret) {
         this.consumerSecret = secret;
     }
-    
+
     public void serName(String name) {
         this.botName = name;
     }

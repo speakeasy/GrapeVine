@@ -1,6 +1,5 @@
 package org.speakeasy.grapevine;
 
-import java.io.File;
 import org.speakeasy.grapevine.flock.sqlite.SQLiteJDBC;
 import java.io.BufferedReader;
 import java.io.File;
