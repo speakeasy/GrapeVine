@@ -15,6 +15,7 @@ public class Main implements Runnable {
     private static File proxyList;
     private static File fimport;
     private static boolean running, isPyImport, doImport, useProxies = false;
+    private static BotHandler botHandler;
 
     private int tickCount;
 
@@ -30,6 +31,17 @@ public class Main implements Runnable {
     private void init() {
         running = true;
         handleArgs();
+
+        if (this.database != null) {
+            if (useProxies) {
+                botHandler = new BotHandler(database, proxyList);
+            } else {
+                botHandler = new BotHandler(database);
+            }
+        }
+        if (this.doImport) {
+            BotImporter botimporter = new BotImporter(botHandler.getDatabase(), fimport, isPyImport);
+        }
     }
 
     private void handleArgs() {
@@ -144,7 +156,7 @@ public class Main implements Runnable {
             quit();
             return;
         }
-        proxyList = new File(cwd.getAbsolutePath() + file);
+        proxyList = new File(cwd.getAbsolutePath() + "/" + file);
         if (!proxyList.canRead()) {
             System.out.println("Cannot read file: " + file + "\nExiting.");
             quit();
@@ -163,7 +175,7 @@ public class Main implements Runnable {
             quit();
             return;
         }
-        fimport = new File(cwd.getAbsolutePath() + file);
+        fimport = new File(cwd.getAbsolutePath() + "/" + file);
         if (!fimport.canRead()) {
             System.out.println("Cannot read file: " + file + "\nExiting.");
             quit();
@@ -182,7 +194,7 @@ public class Main implements Runnable {
             quit();
             return;
         }
-        fimport = new File(cwd.getAbsolutePath() + file);
+        fimport = new File(cwd.getAbsolutePath() + "/" + file);
         if (!fimport.canRead()) {
             System.out.println("Cannot read file: " + file + "\nExiting.");
             quit();
@@ -195,7 +207,7 @@ public class Main implements Runnable {
         long lastTime = System.nanoTime();
         double unprocessed = 0;
         double nsPerTick = 1000000000.0 / 100;
-        int frames = 0;
+        int bots = 0;
         int ticks = 0;
         long lastTimer1 = System.currentTimeMillis();
 
@@ -214,20 +226,20 @@ public class Main implements Runnable {
             }
 
             try {
-                Thread.sleep(1);
+                Thread.sleep(2);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
 
             if (shouldProcess) {
-                frames++;
+                bots++;
                 processBots();
             }
 
             if (System.currentTimeMillis() - lastTimer1 > 1000) {
                 lastTimer1 += 1000;
-                System.out.println(ticks + " ticks, " + frames + " bots processed");
-                frames = 0;
+                System.out.println(ticks + " ticks, " + bots + " bots processed");
+                bots = 0;
                 ticks = 0;
             }
         }
