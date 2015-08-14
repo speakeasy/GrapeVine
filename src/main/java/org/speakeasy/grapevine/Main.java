@@ -41,6 +41,7 @@ public class Main implements Runnable {
         }
         if (this.doImport) {
             BotImporter botimporter = new BotImporter(botHandler.getDatabase(), fimport, isPyImport);
+            botimporter.doImport();
         }
     }
 
@@ -232,8 +233,9 @@ public class Main implements Runnable {
             }
 
             if (shouldProcess) {
-                bots++;
                 processBots();
+                bots += botHandler.getNumBotsProcesses();
+                botHandler.setQueue();
             }
 
             if (System.currentTimeMillis() - lastTimer1 > 1000) {
@@ -250,7 +252,7 @@ public class Main implements Runnable {
     }
 
     private void processBots() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        botHandler.increaseQueue();
     }
 
     public void quit() {

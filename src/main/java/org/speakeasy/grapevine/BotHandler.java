@@ -13,6 +13,8 @@ public class BotHandler extends Thread {
     
     private static SQLiteJDBC database;
     private static File proxyList;
+    private static int queue = 0;
+    private static int lastqueue = 0;
     
     
     public BotHandler(File database, File proxyList) {
@@ -33,10 +35,26 @@ public class BotHandler extends Thread {
     
     @Override
     public void start() {
-        
+        ;
+    }
+    
+    public void loop() {
+        ;
     }
     
     public static SQLiteJDBC getDatabase() {
         return BotHandler.database;
+    }
+    
+    public void increaseQueue() {
+        queue++;
+    }
+    
+    public void setQueue() {
+        lastqueue = queue;
+    }
+    
+    public int getNumBotsProcesses() {
+        return lastqueue - queue;
     }
 }
