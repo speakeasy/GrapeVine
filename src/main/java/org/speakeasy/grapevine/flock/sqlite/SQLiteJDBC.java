@@ -7,9 +7,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 /**
- * Database connection class & utilities *
- */
-/**
+ * Database connection class & utilities
  *
  * @author speakeasy
  */
@@ -28,11 +26,12 @@ public class SQLiteJDBC {
 
     /* quick and dirty constructor to test the database passing the DriverManager name and the fully loaded url to handle */
     /* NB this will typically be available if you make this class concrete and not abstract */
-    public SQLiteJDBC(String sDriverToLoad, String sUrlToLoad) throws Exception {
-        init(sDriverToLoad, sUrlToLoad);
+    public SQLiteJDBC(String sUrlToLoad) throws Exception {
+        this.sUrl = sUrlToLoad;
+        load(sDriver, sUrl);
     }
 
-    public void init(String sDriverVar, String sUrlVar) throws Exception {
+    public void load(String sDriverVar, String sUrlVar) throws Exception {
         setDriver(sDriverVar);
         setUrl(sUrlVar);
         setConnection();
