@@ -1,5 +1,6 @@
 package org.speakeasy.grapevine.flock.sqlite;
 
+import java.io.File;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -19,13 +20,14 @@ public class SQLiteJDBC {
     public Connection conn = null;
     public Statement statement = null;
 
-
-    /* Stub constructor for quick instantiation o/t fly for using some of the ancillary stuff */
     public SQLiteJDBC() {
+        ;
     }
 
-    /* quick and dirty constructor to test the database passing the DriverManager name and the fully loaded url to handle */
-    /* NB this will typically be available if you make this class concrete and not abstract */
+    public SQLiteJDBC(File cwd) {
+        sUrl = cwd.getAbsolutePath() + "/grapevinebots.sqlite";
+    }
+
     public SQLiteJDBC(String sUrlToLoad) throws Exception {
         this.sUrl = sUrlToLoad;
         load(sDriver, sUrl);
