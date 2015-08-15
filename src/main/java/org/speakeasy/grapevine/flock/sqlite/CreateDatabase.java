@@ -1,5 +1,6 @@
 package org.speakeasy.grapevine.flock.sqlite;
 
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -19,7 +20,8 @@ public class CreateDatabase {
     
     public void createDBTableBirds() {
         try {
-            database.executeStmt(sMakeTableBirds);
+            PreparedStatement ps = database.getConnection().prepareStatement(sMakeTableBirds);
+            ps.executeUpdate();
         } catch (SQLException ex) {
             Logger.getLogger(CreateDatabase.class.getName()).log(Level.SEVERE, null, ex);
         }

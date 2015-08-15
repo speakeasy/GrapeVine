@@ -11,4 +11,13 @@ public class TwitterUser {
     public TwitterUser(String name) {
         this.name = name;
     }
+    
+    public TwitterUser(Integer twitterId) {
+        this.twitterId = twitterId;
+    }
+    
+    public TwitterUser(String name, Integer twitterId) {
+        this.name = name;
+        this.twitterId = twitterId;
+    }
 }
