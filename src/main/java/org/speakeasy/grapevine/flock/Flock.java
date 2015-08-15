@@ -11,12 +11,22 @@ public class Flock {
     private HashMap<Integer, Bird> birds;
     
     public Flock(String birdDB) {
-        
+        ; // Not yet implemented.
     }
     
-    @SuppressWarnings("empty-statement")
     public Flock() {
         ;
+    }
+    
+    public boolean contains(Bird bird) {
+        int i = birds.size() - 1;
+        while (i >= 0) {
+            if (birds.get(i) == bird) {
+                return true;
+            }
+            i--;
+        }
+        return false;
     }
     
     public Bird getBird(Integer bird) {
@@ -26,12 +36,10 @@ public class Flock {
         return null;
     }
     
-    public boolean addBird(Bird bird) {
+    public void addBird(Bird bird) {
         if(bird != null) {
             birds.put(birds.size(), bird);
-            return true;
         }
-        return false;
     }
     
     public boolean removeBird(Bird bird) {

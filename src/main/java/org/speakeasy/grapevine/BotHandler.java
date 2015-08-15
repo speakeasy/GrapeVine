@@ -5,6 +5,7 @@ import java.net.InetAddress;
 import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.speakeasy.grapevine.flock.Flock;
 import org.speakeasy.grapevine.flock.sqlite.SQLiteJDBC;
 
 /**
@@ -14,6 +15,7 @@ import org.speakeasy.grapevine.flock.sqlite.SQLiteJDBC;
 public class BotHandler extends Thread {
 
     private static SQLiteJDBC database;
+    private static Flock flock;
     private static File proxyList;
     private HashMap<InetAddress, Integer> proxies = new HashMap();
     private static int queue = 0;
@@ -37,6 +39,10 @@ public class BotHandler extends Thread {
         } catch (Exception ex) {
             Logger.getLogger(BotHandler.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+    
+    private void initFlock() {
+        
     }
 
     @Override

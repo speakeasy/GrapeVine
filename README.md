@@ -18,3 +18,6 @@ Planned features:
 * Ability to detect banned bots, rate limiting etc.
 
 * Any other features that can be thought of.
+
+
+* Automatically log in OAuth via automated HTTP request.
