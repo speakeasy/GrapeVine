@@ -256,6 +256,7 @@ public class Main implements Runnable {
     }
 
     public void quit() {
+        BotHandler.quit();
         running = false;
     }
 }

@@ -4,11 +4,11 @@ package org.speakeasy.grapevine.flock.following;
  *
  * @author speakeasy
  */
-public class Follower {
+public class TwitterUser {
     public String name = "";
     public Integer twitterId;
     
-    public Follower(String name) {
+    public TwitterUser(String name) {
         this.name = name;
     }
 }

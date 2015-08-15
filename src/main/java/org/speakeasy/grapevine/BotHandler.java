@@ -17,9 +17,10 @@ public class BotHandler extends Thread {
     private static SQLiteJDBC database;
     private static Flock flock;
     private static File proxyList;
-    private HashMap<InetAddress, Integer> proxies = new HashMap();
+    private static HashMap<InetAddress, Integer> proxies = new HashMap();
     private static int queue = 0;
     private static int lastqueue = 0;
+    private static boolean running = false;
 
     public BotHandler(File database, File proxyList) {
         loadDatabase(database.getAbsolutePath());
@@ -68,5 +69,9 @@ public class BotHandler extends Thread {
 
     public int getNumBotsProcesses() {
         return lastqueue - queue;
+    }
+    
+    public void quit() {
+        this.running = false;
     }
 }
