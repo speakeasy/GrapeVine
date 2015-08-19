@@ -73,6 +73,10 @@ public class Bird {
     public int getId() {
         return this.id;
     }
+    
+    public int getTwitterId() {
+        return this.twitterId;
+    }
 
     public String getOAuthToken() {
         return this.oAuthToken;
@@ -180,5 +184,9 @@ public class Bird {
 
     public void setId(int id) {
         this.id = id;
+    }
+    
+    public void setTwitterId(int twitterId) {
+        this.twitterId = twitterId;
     }
 }

@@ -5,6 +5,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import java.lang.reflect.Type;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSetMetaData;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -13,6 +14,7 @@ import java.util.Base64;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.speakeasy.grapevine.flock.following.TwitterUserMap;
+import org.speakeasy.grapevine.flock.sqlite.BirdDBObject;
 import org.speakeasy.grapevine.flock.sqlite.CreateDatabase;
 import org.speakeasy.grapevine.flock.sqlite.SQLiteJDBC;
 
@@ -37,23 +39,34 @@ public class FlockDBHelper {
      String following = ""; // b64 JSON object, list of users following bot.
      String usersMuted = ""; // b64 JSON object, list of users who are muted.
      String usersUnMuted = ""; // b64 JSON object, list of users who are not muted.
-     String usersKeepUnmuted = ""; // b64 JSON object, list of users to never mute.
+     String usersKeepUnMuted = ""; // b64 JSON object, list of users to never mute.
      */
 
     private Flock theFlock;
     private SQLiteJDBC database;
     private Connection conn;
+    private PreparedStatement psUpdateBird;
 
     public FlockDBHelper(SQLiteJDBC database, Flock theFlock) {
         this.database = database;
         this.conn = this.database.getConnection();
         this.theFlock = theFlock;
+        initPs();
     }
 
     public FlockDBHelper(SQLiteJDBC database) {
         this.database = database;
         this.conn = this.database.getConnection();
         this.theFlock = new Flock();
+        initPs();
+    }
+    
+    public void initPs() {
+        try {
+            psUpdateBird = conn.prepareStatement("UPDATE birds SET password = ?, email = ?, twitterid = ?, oauthtoken = ?, oauthsecret = ?, consumertoken = ?, consumersecret = ?, botname = ?, follow = ?, followgroup = ?, followed = ?, following = ?, usersmuted = ?, usersunmuted = ?, userskeepunmuted = ? WHERE botname = ?");
+        } catch (SQLException ex) {
+            Logger.getLogger(FlockDBHelper.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     public Integer getBirdCount() {
@@ -120,6 +133,47 @@ public class FlockDBHelper {
         }
         return tflock;
     }
+    
+    public void writeFlockToDB(Flock theflock) {
+        int i = 0;
+        int j = theFlock.size() - 1;
+        Bird bird = null;
+        while(i<= j) {
+            bird = theFlock.getBird(i);
+            writeBirdToDB(bird);
+            i++;
+        }
+    }
+    
+    public void writeBirdToDB(Bird bird) {
+        try {
+            BirdDBObject birdobj = BirdDBObject.birdToDBObject(bird);
+            
+
+            // "UPDATE birds SET
+            psUpdateBird.setString(1,birdobj.password); // password = ?, TEXT
+            psUpdateBird.setString(2,birdobj.email); // email = ?, TEXT
+            psUpdateBird.setInt(3,birdobj.twitterId); // twitterid = ?, INTEGER
+            psUpdateBird.setString(4,birdobj.oAuthToken); // oauthtoken = ?, TEXT
+            psUpdateBird.setString(5,birdobj.oAuthSecret); // oauthsecret = ?, TEXT
+            psUpdateBird.setString(6,birdobj.consumerToken); // consumertoken = ?, TEXT
+            psUpdateBird.setString(7,birdobj.consumerSecret); // consumersecret = ?, TEXT
+            psUpdateBird.setString(8,birdobj.botName); // botname = ?, TEXT
+            psUpdateBird.setString(9,birdobj.follow); // follow = ?, TEXT
+            psUpdateBird.setString(10,birdobj.followGroup); // followgroup = ?, TEXT
+            psUpdateBird.setString(11,birdobj.followed); // followed = ?, TEXT
+            psUpdateBird.setString(12,birdobj.following); // following = ?, TEXT
+            psUpdateBird.setString(13,birdobj.usersMuted); // usersmuted = ?, TEXT
+            psUpdateBird.setString(14,birdobj.usersUnMuted); // usersunmuted = ?, TEXT
+            psUpdateBird.setString(15,birdobj.usersKeepUnMuted); // userskeepunmuted = ? TEXT
+            psUpdateBird.setString(16,birdobj.botName); // WHERE botname = ? TEXT
+            
+            psUpdateBird.executeUpdate();
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(FlockDBHelper.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 
     public Flock getFlock() {
         return theFlock;
@@ -140,13 +194,13 @@ public class FlockDBHelper {
         return null;
     }
 
-    public String b64EncodeSerialize(TwitterUserMap decoded) {
+    public static String b64EncodeSerialize(TwitterUserMap decoded) {
         Gson gson = new GsonBuilder().create();
         byte[] jsonserialized = gson.toJson(decoded).getBytes();
         return Base64.getEncoder().encodeToString(jsonserialized);
     }
 
-    public TwitterUserMap b64DecodeDeserialize(String encoded) {
+    public static TwitterUserMap b64DecodeDeserialize(String encoded) {
         TwitterUserMap decoded;
         byte[] decode = Base64.getDecoder().decode(encoded);
         String json = "";

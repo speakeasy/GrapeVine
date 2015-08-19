@@ -32,6 +32,10 @@ public class Flock {
         return null;
     }
     
+    public Integer size() {
+        return birds.size();
+    }
+    
     public void addBird(Bird bird) {
         if(bird != null) {
             birds.put(birds.size(), bird);
