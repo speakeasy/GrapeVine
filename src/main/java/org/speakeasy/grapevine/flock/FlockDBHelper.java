@@ -5,17 +5,13 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import java.lang.reflect.Type;
 import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.ResultSetMetaData;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Base64;
-import java.util.HashMap;
-import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.speakeasy.grapevine.flock.following.TwitterUser;
 import org.speakeasy.grapevine.flock.following.TwitterUserMap;
 import org.speakeasy.grapevine.flock.sqlite.CreateDatabase;
 import org.speakeasy.grapevine.flock.sqlite.SQLiteJDBC;
@@ -75,7 +71,6 @@ public class FlockDBHelper {
         Flock tflock = new Flock();
         Bird bird = null;
         ResultSet rs = executeQuery("SELECT * FROM birds");
-        Vector<Object> v = new Vector<Object>();
         String[] columnNames = getColumnNameArray(rs);
         String[] columnTypes = getColumnTypeArray(rs);
         // Objects in row.

@@ -1,6 +1,5 @@
 package org.speakeasy.grapevine.flock;
 
-import java.util.HashMap;
 import org.speakeasy.grapevine.flock.following.TwitterUserMap;
 
 /**
@@ -60,17 +59,11 @@ public class Bird {
     }
 
     public String getEmail() {
-        if (this.email != null) {
             return this.email;
-        }
-        return null;
     }
 
     public String getPassword() {
-        if (this.password != null) {
-            return this.password;
-        }
-        return null;
+        return this.password;
     }
 
     public int getId() {
@@ -173,27 +166,15 @@ public class Bird {
         usersKeepUnMuted = users;
     }
 
-    public boolean setEmail(String email) {
-        if (email != null) {
+    public void setEmail(String email) {
             this.email = email;
-            return true;
-        }
-        return false;
     }
 
-    public boolean setPassword(String password) {
-        if (password != null && password.length() >= 6) {
+    public void setPassword(String password) {
             this.password = password;
-            return true;
-        }
-        return false;
     }
 
-    public boolean setId(int id) {
+    public void setId(int id) {
         this.id = id;
-        if (this.id == id) {
-            return true;
-        }
-        return false;
     }
 }
