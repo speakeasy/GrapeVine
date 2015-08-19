@@ -80,6 +80,14 @@ public class BotHandler extends Thread {
     public static SQLiteJDBC getDatabase() {
         return BotHandler.database;
     }
+    
+    public static Flock getFlock(){
+        return BotHandler.flock;
+    }
+    
+    public void setFlock(Flock flock) {
+        BotHandler.flock = flock;
+    }
 
     public void increaseQueue() {
         queue++;
