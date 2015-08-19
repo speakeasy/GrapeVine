@@ -93,7 +93,7 @@ public class BotHandler extends Thread {
         return lastqueue - queue;
     }
 
-    public void quit() {
-        this.running = false;
+    public static void quit() {
+        running = false;
     }
 }

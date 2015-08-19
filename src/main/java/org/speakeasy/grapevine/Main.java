@@ -255,7 +255,7 @@ public class Main implements Runnable {
         botHandler.increaseQueue();
     }
 
-    public void quit() {
+    public static void quit() {
         BotHandler.quit();
         running = false;
     }
