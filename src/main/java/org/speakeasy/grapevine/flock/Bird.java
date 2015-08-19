@@ -28,6 +28,10 @@ public class Bird {
     private static int followBackoffMin = 42; // The minimum amount of time to wait before following a user.
     private static int followBackoffMax = 255; // The maximum amount of time to wait before following a user.
 
+    public Bird(){
+        
+    }
+    
     public Bird(String email, String password) {
         this.email = email;
         this.password = password;
