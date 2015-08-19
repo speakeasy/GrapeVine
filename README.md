@@ -21,3 +21,10 @@ Planned features:
 
 
 * Automatically log in OAuth via automated HTTP request.
+
+Longer term:
+* Integrated JMegaHal Markov text generation
+* PHP Web UI and socketed connetion on localhost for c&c.
+* deeplearning4j neural network weighted markov statistical learning of some kind.
+* deeplearning4j neural network weighted distributed average random seed for markov uniqueness.
+

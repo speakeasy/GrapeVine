@@ -68,7 +68,7 @@ public class BotImporter {
                 bird.setConsumerSecret(line.substring(16, line.length() + 1));
                 line = fileLines.get(i++);
                 bird.setName(line.substring(15, line.length() + 1));
-                line = fileLines.get(i+3); // 3
+                line = fileLines.get(i+3); // 3: ALREADY_FOLLOWED_FILE:, FOLLOWERS_FILE:, FOLLOWS_FILE:
                 bird.setFollowGroup(toUserMap(line.substring(21, line.length() + 1)));
                 line = fileLines.get(i++);
                 bird.setUsersKeepUnMuted(toUserMap(line.substring(19, line.length() + 1)));
