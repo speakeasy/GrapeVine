@@ -46,6 +46,7 @@ public class FlockDBHelper {
     private SQLiteJDBC database;
     private Connection conn;
     private PreparedStatement psUpdateBird;
+    private PreparedStatement psInsertBird;
 
     public FlockDBHelper(SQLiteJDBC database, Flock theFlock) {
         this.database = database;
@@ -64,6 +65,7 @@ public class FlockDBHelper {
     public void initPs() {
         try {
             psUpdateBird = conn.prepareStatement("UPDATE birds SET password = ?, email = ?, twitterid = ?, oauthtoken = ?, oauthsecret = ?, consumertoken = ?, consumersecret = ?, botname = ?, follow = ?, followgroup = ?, followed = ?, following = ?, usersmuted = ?, usersunmuted = ?, userskeepunmuted = ? WHERE botname = ?");
+            psInsertBird = conn.prepareStatement("INSERT INTO birds (password, email, twitterid, oauthtoken, oauthsecret, consumertoken, consumersecret, botname, follow, followgroup, followed, following, usersmuted, usersunmuted, userskeepunmuted) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
         } catch (SQLException ex) {
             Logger.getLogger(FlockDBHelper.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -169,6 +171,35 @@ public class FlockDBHelper {
             psUpdateBird.setString(16,birdobj.botName); // WHERE botname = ? TEXT
             
             psUpdateBird.executeUpdate();
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(FlockDBHelper.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+        public void insertBirdToDB(Bird bird) {
+        try {
+            BirdDBObject birdobj = BirdDBObject.birdToDBObject(bird);
+            
+
+            // "INSERT INTO birds
+            psInsertBird.setString(1,birdobj.password); // password = ?, TEXT
+            psInsertBird.setString(2,birdobj.email); // email = ?, TEXT
+            psInsertBird.setInt(3,birdobj.twitterId); // twitterid = ?, INTEGER
+            psInsertBird.setString(4,birdobj.oAuthToken); // oauthtoken = ?, TEXT
+            psInsertBird.setString(5,birdobj.oAuthSecret); // oauthsecret = ?, TEXT
+            psInsertBird.setString(6,birdobj.consumerToken); // consumertoken = ?, TEXT
+            psInsertBird.setString(7,birdobj.consumerSecret); // consumersecret = ?, TEXT
+            psInsertBird.setString(8,birdobj.botName); // botname = ?, TEXT
+            psInsertBird.setString(9,birdobj.follow); // follow = ?, TEXT
+            psInsertBird.setString(10,birdobj.followGroup); // followgroup = ?, TEXT
+            psInsertBird.setString(11,birdobj.followed); // followed = ?, TEXT
+            psInsertBird.setString(12,birdobj.following); // following = ?, TEXT
+            psInsertBird.setString(13,birdobj.usersMuted); // usersmuted = ?, TEXT
+            psInsertBird.setString(14,birdobj.usersUnMuted); // usersunmuted = ?, TEXT
+            psInsertBird.setString(15,birdobj.usersKeepUnMuted); // userskeepunmuted = ? TEXT
+            
+            psInsertBird.executeUpdate();
             
         } catch (SQLException ex) {
             Logger.getLogger(FlockDBHelper.class.getName()).log(Level.SEVERE, null, ex);
