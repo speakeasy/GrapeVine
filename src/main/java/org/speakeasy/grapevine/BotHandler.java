@@ -2,10 +2,12 @@ package org.speakeasy.grapevine;
 
 import java.io.File;
 import java.net.InetAddress;
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.speakeasy.grapevine.flock.Flock;
+import org.speakeasy.grapevine.flock.FlockDBHelper;
 import org.speakeasy.grapevine.flock.sqlite.SQLiteJDBC;
 
 /**
@@ -16,6 +18,7 @@ public class BotHandler extends Thread {
 
     private static SQLiteJDBC database;
     private static Flock flock;
+    private static FlockDBHelper fdbhelper;
     private static File proxyList;
     private static HashMap<InetAddress, Integer> proxies = new HashMap();
     private static int queue = 0;
@@ -29,9 +32,9 @@ public class BotHandler extends Thread {
     public BotHandler(File database) {
         loadDatabase(database.getAbsolutePath());
     }
-    
+
     public BotHandler() {
-        BotHandler.database = new SQLiteJDBC(new File(System.getProperty("user.dir")));
+        ;
     }
 
     private void loadDatabase(String db) {
@@ -41,18 +44,37 @@ public class BotHandler extends Thread {
             Logger.getLogger(BotHandler.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
-    private void initFlock() {
-        
-    }
 
     @Override
     public void start() {
-        ;
+        
+        try {
+            if(database.conn == null || database.conn.isClosed()) {
+                BotHandler.database = new SQLiteJDBC(new File(System.getProperty("user.dir") + "/grapevineflock.sqlite"));
+            }
+            
+            // INIT values
+            flock = new Flock();
+            fdbhelper = new FlockDBHelper(database, flock);
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(BotHandler.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        loop();
     }
 
     public void loop() {
-        ;
+        while (running) {
+            if (queue == 0) {
+                try {
+                    Thread.sleep(2);
+                } catch (InterruptedException ex) {
+                    Logger.getLogger(BotHandler.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+            // TODO
+        }
+
     }
 
     public static SQLiteJDBC getDatabase() {
@@ -70,7 +92,7 @@ public class BotHandler extends Thread {
     public int getNumBotsProcesses() {
         return lastqueue - queue;
     }
-    
+
     public void quit() {
         this.running = false;
     }

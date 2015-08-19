@@ -25,7 +25,7 @@ public class SQLiteJDBC {
     }
 
     public SQLiteJDBC(File cwd) {
-        sUrl = cwd.getAbsolutePath() + "/grapevinebots.sqlite";
+        sUrl = cwd.getAbsolutePath() + "/grapevineflocks.sqlite";
     }
 
     public SQLiteJDBC(String sUrlToLoad) throws Exception {

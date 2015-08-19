@@ -10,10 +10,6 @@ public class Flock {
     private final Flock theflock = this;
     private HashMap<Integer, Bird> birds;
     
-    public Flock(String birdDB) {
-        ; // Not yet implemented.
-    }
-    
     public Flock() {
         ;
     }

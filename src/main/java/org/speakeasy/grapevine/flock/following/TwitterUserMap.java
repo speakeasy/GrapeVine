@@ -8,7 +8,7 @@ import java.util.HashMap;
  */
 public class TwitterUserMap extends HashMap<Integer, TwitterUser> {
 
-    private HashMap<Integer, TwitterUser> users = this;
+    private final HashMap<Integer, TwitterUser> users = this;
 
     public TwitterUserMap() {
         ;

@@ -6,13 +6,17 @@ import com.google.gson.reflect.TypeToken;
 import java.lang.reflect.Type;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSetMetaData;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Base64;
 import java.util.HashMap;
+import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.speakeasy.grapevine.flock.following.TwitterUser;
+import org.speakeasy.grapevine.flock.following.TwitterUserMap;
 import org.speakeasy.grapevine.flock.sqlite.CreateDatabase;
 import org.speakeasy.grapevine.flock.sqlite.SQLiteJDBC;
 
@@ -50,6 +54,12 @@ public class FlockDBHelper {
         this.theFlock = theFlock;
     }
 
+    public FlockDBHelper(SQLiteJDBC database) {
+        this.database = database;
+        this.conn = this.database.getConnection();
+        this.theFlock = new Flock();
+    }
+
     public Integer getBirdCount() {
         try {
             ResultSet rs = executeQuery("SELECT Count(*) FROM birds");
@@ -60,7 +70,66 @@ public class FlockDBHelper {
         }
         return null;
     }
-    
+
+    public Flock getFlockFromDB() {
+        Flock tflock = new Flock();
+        ResultSet rs = executeQuery("SELECT * FROM birds");
+        Vector<Object> v = new Vector<Object>();
+        String[] columnNames = getColumnNameArray(rs);
+        String[] columnTypes = getColumnTypeArray(rs);
+        // Objects in row.
+        int id = 0; // Database ID.
+        String password = null;
+        String email = null;
+        int twitterId = 0; // The twitter ID of the bot.
+        String oAuthToken = ""; // Twitter API OAuth Token.
+        String oAuthSecret = ""; // Twitter API OAuth Secret.
+        String consumerToken = ""; // Twitter API Consumer Token.
+        String consumerSecret = ""; // Twitter API Consumer Secret.
+        String botName = ""; // Twitter account name (Case sensitive.)
+        TwitterUserMap follow = null; // list of who bot is to follow.
+        TwitterUserMap followGroup = null; // list of "group" users to repost or generate similar posts to.
+        TwitterUserMap followed = null; // list of users that are followed.
+        TwitterUserMap following = null; // list of users following bot.
+        TwitterUserMap usersMuted = null; // list of users who are muted.
+        TwitterUserMap usersUnMuted = null; // list of users who are not muted.
+        TwitterUserMap usersKeepUnMuted = null; // list of users to never mute.
+        
+        Bird bird = null;
+        try {
+            while (rs.next()) {
+                id = Integer.decode(rs.getObject(columnNames[0]).toString());
+                password = rs.getObject(columnNames[1]).toString();
+                email = rs.getObject(columnNames[2]).toString();
+                twitterId = Integer.decode(rs.getObject(columnNames[3]).toString());
+                oAuthToken = rs.getObject(columnNames[4]).toString();
+                oAuthSecret = rs.getObject(columnNames[5]).toString();
+                consumerToken = rs.getObject(columnNames[6]).toString();
+                consumerSecret = rs.getObject(columnNames[7]).toString();
+                botName = rs.getObject(columnNames[8]).toString();
+                follow = b64DecodeDeserialize(rs.getObject(columnNames[9]).toString());
+                followGroup = b64DecodeDeserialize(rs.getObject(columnNames[10]).toString());
+                followed = b64DecodeDeserialize(rs.getObject(columnNames[11]).toString());
+                following = b64DecodeDeserialize(rs.getObject(columnNames[12]).toString());
+                usersMuted = b64DecodeDeserialize(rs.getObject(columnNames[13]).toString());
+                usersUnMuted = b64DecodeDeserialize(rs.getObject(columnNames[14]).toString());
+                usersKeepUnMuted = b64DecodeDeserialize(rs.getObject(columnNames[15]).toString());
+                
+            }
+        } catch (SQLException | NumberFormatException ex) {
+            Logger.getLogger(FlockDBHelper.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return tflock;
+    }
+
+    public Flock getFlock() {
+        return theFlock;
+    }
+
+    public void setFlock(Flock flock) {
+        this.theFlock = flock;
+    }
+
     public ResultSet executeQuery(String query) {
         try {
             Statement s = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,
@@ -72,14 +141,14 @@ public class FlockDBHelper {
         return null;
     }
 
-    public String b64EncodeSerialize(HashMap<Integer, String> decoded) {
+    public String b64EncodeSerialize(TwitterUserMap decoded) {
         Gson gson = new GsonBuilder().create();
         byte[] jsonserialized = gson.toJson(decoded).getBytes();
         return Base64.getEncoder().encodeToString(jsonserialized);
     }
 
-    public HashMap<Integer, String> b64DecodeDeserialize(String encoded) {
-        HashMap<Integer, String> decoded;
+    public TwitterUserMap b64DecodeDeserialize(String encoded) {
+        TwitterUserMap decoded;
         byte[] decode = Base64.getDecoder().decode(encoded);
         String json = "";
         int i = 0;
@@ -88,10 +157,42 @@ public class FlockDBHelper {
             i++;
         }
         Gson gson = new GsonBuilder().create();
-        Type type = new TypeToken<HashMap<Integer, String>>() {
+        Type type = new TypeToken<TwitterUserMap>() {
         }.getType();
         decoded = gson.fromJson(json, type);
         return decoded;
+    }
+
+    public static String[] getColumnNameArray(ResultSet rs) {
+        String sArr[] = null;
+        try {
+            ResultSetMetaData rm = rs.getMetaData();
+            String sArray[] = new String[rm.getColumnCount()];
+            for (int ctr = 1; ctr <= sArray.length; ctr++) {
+                String s = rm.getColumnName(ctr);
+                sArray[ctr - 1] = s;
+            }
+            return sArray;
+        } catch (Exception e) {
+            System.out.println(e);
+            return sArr;
+        }
+    }
+
+    public static String[] getColumnTypeArray(ResultSet rs) {
+        String sArr[] = null;
+        try {
+            ResultSetMetaData rm = rs.getMetaData();
+            String sArray[] = new String[rm.getColumnCount()];
+            for (int ctr = 1; ctr <= sArray.length; ctr++) {
+                String s = rm.getColumnTypeName(ctr);
+                sArray[ctr - 1] = s;
+            }
+            return sArray;
+        } catch (Exception e) {
+            System.out.println(e);
+            return sArr;
+        }
     }
 
 }

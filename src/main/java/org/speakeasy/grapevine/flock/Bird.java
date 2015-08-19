@@ -25,7 +25,7 @@ public class Bird {
     private TwitterUserMap following; // list of users following bot.
     private TwitterUserMap usersMuted; // list of users who are muted.
     private TwitterUserMap usersUnMuted; // list of users who are not muted.
-    private TwitterUserMap usersKeepUnmuted; // list of users to never mute.
+    private TwitterUserMap usersKeepUnMuted; // list of users to never mute.
     private static int followBackoffMin = 42; // The minimum amount of time to wait before following a user.
     private static int followBackoffMax = 255; // The maximum amount of time to wait before following a user.
 
@@ -78,6 +78,34 @@ public class Bird {
         return this.botName;
     }
 
+    public TwitterUserMap getFollow() {
+        return follow;
+    }
+
+    public TwitterUserMap getFollowGroup() {
+        return followGroup;
+    }
+
+    public TwitterUserMap getFollowed() {
+        return followed;
+    }
+
+    public TwitterUserMap getFollowing() {
+        return following;
+    }
+
+    public TwitterUserMap getUsersMuted() {
+        return usersMuted;
+    }
+
+    public TwitterUserMap getUsersUnMuted() {
+        return usersUnMuted;
+    }
+
+    public TwitterUserMap getUsersKeepUnMuted() {
+        return usersKeepUnMuted;
+    }
+
     public void setOAuthToken(String token) {
         this.oAuthToken = token;
     }
@@ -94,8 +122,36 @@ public class Bird {
         this.consumerSecret = secret;
     }
 
-    public void serName(String name) {
+    public void setName(String name) {
         this.botName = name;
+    }
+
+    public void setFollow(TwitterUserMap users) {
+        follow = users;
+    }
+
+    public void setFollowGroup(TwitterUserMap users) {
+        followGroup = users;
+    }
+
+    public void setFollowed(TwitterUserMap users) {
+        followed = users;
+    }
+
+    public void setFollowing(TwitterUserMap users) {
+        following = users;
+    }
+
+    public void setUsersMuted(TwitterUserMap users) {
+        usersMuted = users;
+    }
+
+    public void setUsersUnMuted(TwitterUserMap users) {
+        usersUnMuted = users;
+    }
+
+    public void setUsersKeepUnMuted(TwitterUserMap users) {
+        usersKeepUnMuted = users;
     }
 
     public boolean setEmail(String email) {
