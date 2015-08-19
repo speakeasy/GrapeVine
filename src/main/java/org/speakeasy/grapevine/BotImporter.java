@@ -23,6 +23,7 @@ public class BotImporter {
     private File fimport;
     private boolean isPyImport;
     private HashMap<Integer, String> fileLines = new HashMap();
+    private BotHandler bothandler;
 
     /**
      *
@@ -30,8 +31,9 @@ public class BotImporter {
      * @param fimport
      * @param isPyImport
      */
-    public BotImporter(SQLiteJDBC database, File fimport, boolean isPyImport) {
+    public BotImporter(SQLiteJDBC database, BotHandler bothandler, File fimport, boolean isPyImport) {
         this.database = database;
+        this.bothandler = bothandler;
         this.fimport = fimport;
         this.isPyImport = isPyImport;
         readFile(fimport);
@@ -59,23 +61,41 @@ public class BotImporter {
         while (i <= j) {
             line = fileLines.get(i++);
             if (line.startsWith("OAUTH_TOKEN")) {
+                // OAUTH_TOKEN:
                 bird.setOAuthToken(line.substring(12, line.length() + 1));
                 line = fileLines.get(i++);
+                // OAUTH_SECRET:
                 bird.setOAuthSecret(line.substring(13, line.length() + 1));
                 line = fileLines.get(i++);
+                // CONSUMER_KEY:
                 bird.setConsumerToken(line.substring(13, line.length() + 1));
                 line = fileLines.get(i++);
+                // CONSUMER_SECRET:
                 bird.setConsumerSecret(line.substring(16, line.length() + 1));
                 line = fileLines.get(i++);
+                // TWITTER_HANDLE:
                 bird.setName(line.substring(15, line.length() + 1));
-                line = fileLines.get(i+3); // 3: ALREADY_FOLLOWED_FILE:, FOLLOWERS_FILE:, FOLLOWS_FILE:
+                line = fileLines.get(i++);
+                // ALREADY_FOLLOWED_FILE:
+                ;
+                line = fileLines.get(i++);
+                // FOLLOWERS_FILE:
+                ;
+                line = fileLines.get(i++);
+                // FOLLOWS_FILE:
+                ;
+                line = fileLines.get(i++);
+                // USERS_KEEP_FOLLOWING:
                 bird.setFollowGroup(toUserMap(line.substring(21, line.length() + 1)));
                 line = fileLines.get(i++);
+                // USERS_KEEP_UNMUTED:
                 bird.setUsersKeepUnMuted(toUserMap(line.substring(19, line.length() + 1)));
                 line = fileLines.get(i++);
+                // USERS_KEEP_MUTED:
                 bird.setUsersMuted(toUserMap(line.substring(17, line.length() + 1)));
             }
         }
+        
     }
 
     private TwitterUserMap toUserMap(String usercsv) {

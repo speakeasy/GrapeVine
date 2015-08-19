@@ -40,7 +40,7 @@ public class Main implements Runnable {
             }
         }
         if (this.doImport) {
-            BotImporter botimporter = new BotImporter(botHandler.getDatabase(), fimport, isPyImport);
+            BotImporter botimporter = new BotImporter(botHandler.getDatabase(), botHandler, fimport, isPyImport);
             botimporter.doImport();
         }
     }
