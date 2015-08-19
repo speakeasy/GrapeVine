@@ -10,9 +10,9 @@ import org.speakeasy.grapevine.flock.following.TwitterUserMap;
 public class Bird {
 
     public final Bird thebird = this;
+    private int id; // Database ID.
     private String password;
     private String email;
-    private int id; // Database ID.
     private int twitterId; // The twitter ID of the bot.
     private String oAuthToken = ""; // Twitter API OAuth Token.
     private String oAuthSecret = ""; // Twitter API OAuth Secret.
@@ -38,6 +38,25 @@ public class Bird {
         this.email = email;
         this.password = password;
         this.id = id;
+    }
+
+    public Bird(int id, String password, String email, int twitterId, String oAuthToken, String oAuthSecret, String consumerToken, String consumerSecret, String botName, TwitterUserMap follow, TwitterUserMap followGroup, TwitterUserMap followed, TwitterUserMap following, TwitterUserMap usersMuted, TwitterUserMap usersUnMuted, TwitterUserMap usersKeepUnMuted) {
+        this.id = id;
+        this.password = password;
+        this.email = email;
+        this.twitterId = twitterId;
+        this.oAuthToken = oAuthToken;
+        this.oAuthSecret = oAuthSecret;
+        this.consumerToken = consumerToken;
+        this.consumerSecret = consumerSecret;
+        this.botName = botName;
+        this.follow = follow;
+        this.followGroup = followGroup;
+        this.followed = followed;
+        this.following = following;
+        this.usersMuted = usersMuted;
+        this.usersUnMuted = usersUnMuted;
+        this.usersKeepUnMuted = usersKeepUnMuted;
     }
 
     public String getEmail() {

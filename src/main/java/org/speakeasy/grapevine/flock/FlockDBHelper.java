@@ -73,6 +73,7 @@ public class FlockDBHelper {
 
     public Flock getFlockFromDB() {
         Flock tflock = new Flock();
+        Bird bird = null;
         ResultSet rs = executeQuery("SELECT * FROM birds");
         Vector<Object> v = new Vector<Object>();
         String[] columnNames = getColumnNameArray(rs);
@@ -95,7 +96,7 @@ public class FlockDBHelper {
         TwitterUserMap usersUnMuted = null; // list of users who are not muted.
         TwitterUserMap usersKeepUnMuted = null; // list of users to never mute.
         
-        Bird bird = null;
+        
         try {
             while (rs.next()) {
                 id = Integer.decode(rs.getObject(columnNames[0]).toString());
@@ -115,6 +116,9 @@ public class FlockDBHelper {
                 usersUnMuted = b64DecodeDeserialize(rs.getObject(columnNames[14]).toString());
                 usersKeepUnMuted = b64DecodeDeserialize(rs.getObject(columnNames[15]).toString());
                 
+                bird = new Bird(id, password, email, twitterId, oAuthToken, oAuthSecret, consumerToken, consumerSecret, botName, follow, followGroup, followed, following, usersMuted, usersUnMuted, usersKeepUnMuted);
+                
+                tflock.addBird(bird);
             }
         } catch (SQLException | NumberFormatException ex) {
             Logger.getLogger(FlockDBHelper.class.getName()).log(Level.SEVERE, null, ex);

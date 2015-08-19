@@ -10,8 +10,45 @@ public class TwitterUserMap extends HashMap<Integer, TwitterUser> {
 
     private final HashMap<Integer, TwitterUser> users = this;
 
-    public TwitterUserMap() {
-        ;
+    public TwitterUser getUser(String name) {
+        TwitterUser user = null;
+        int i = users.size() - 1;
+        while (i >= 0) {
+            user = users.get(i);
+            if (user.name == null ? name == null : user.name.equals(name)) {
+                return user;
+            }
+            i--;
+        }
+        return null;
+    }
+
+    public TwitterUser getUser(Integer twitterId) {
+        TwitterUser user = null;
+        int i = users.size() - 1;
+        while (i >= 0) {
+            user = users.get(i);
+            if (user.twitterId == 0 ? twitterId == null : user.twitterId.equals(twitterId)) {
+                return user;
+            }
+            i--;
+        }
+        return null;
+    }
+
+    public TwitterUser getUser(String name, Integer twitterId) {
+        TwitterUser user = null;
+        int i = users.size() - 1;
+        while (i >= 0) {
+            user = users.get(i);
+            if (user.name == null ? name == null : user.name.equals(name)) {
+                if (user.twitterId == 0 ? twitterId == null : user.twitterId.equals(twitterId)) {
+                    return user;
+                }
+            }
+            i--;
+        }
+        return null;
     }
 
     public void add(TwitterUser user) {
@@ -40,7 +77,5 @@ public class TwitterUserMap extends HashMap<Integer, TwitterUser> {
         }
         return false;
     }
-    
-    
-    
+
 }
