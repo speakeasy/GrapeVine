@@ -26,7 +26,7 @@ public class BirdDBObject {
     public String usersUnMuted = ""; // b64 JSON object, list of users who are not muted.
     public String usersKeepUnMuted = ""; // b64 JSON object, list of users to never mute.
 
-    public BirdDBObject(int id, String password, String email, int twitterId, String oAuthToken, String oAuthSecret, String consumerToken, String consumerSecret, String botName, String follow, String followGroup, String followed, String following, String usersMuted, String usersUnMuted, String usersKeepUnMuted){
+    public BirdDBObject(int id, String password, String email, int twitterId, String oAuthToken, String oAuthSecret, String consumerToken, String consumerSecret, String botName, String follow, String followGroup, String followed, String following, String usersMuted, String usersUnMuted, String usersKeepUnMuted) {
         this.id = id;
         this.password = password;
         this.email = email;
@@ -44,11 +44,11 @@ public class BirdDBObject {
         this.usersUnMuted = usersUnMuted;
         this.usersKeepUnMuted = usersKeepUnMuted;
     }
-    
+
     public BirdDBObject() {
         ;
     }
-    
+
     public static BirdDBObject birdToDBObject(Bird bird) {
         BirdDBObject birdobj = new BirdDBObject();
         birdobj.id = bird.getId();
@@ -68,6 +68,27 @@ public class BirdDBObject {
         birdobj.usersUnMuted = FlockDBHelper.b64EncodeSerialize(bird.getUsersUnMuted());
         birdobj.usersKeepUnMuted = FlockDBHelper.b64EncodeSerialize(bird.getUsersKeepUnMuted());
         return birdobj;
+    }
+
+    public static Bird birdDBObjectToBird(BirdDBObject birdobj) {
+        Bird bird = new Bird();
+        bird.setId(birdobj.id);
+        bird.setPassword(birdobj.password);
+        bird.setEmail(birdobj.email);
+        bird.setTwitterId(birdobj.twitterId);
+        bird.setOAuthToken(birdobj.oAuthToken);
+        bird.setOAuthSecret(birdobj.oAuthSecret);
+        bird.setConsumerToken(birdobj.consumerToken);
+        bird.setConsumerSecret(birdobj.consumerSecret);
+        bird.setName(birdobj.botName);
+        bird.setFollow(FlockDBHelper.b64DecodeDeserialize(birdobj.follow));
+        bird.setFollowGroup(FlockDBHelper.b64DecodeDeserialize(birdobj.followGroup));
+        bird.setFollowed(FlockDBHelper.b64DecodeDeserialize(birdobj.followed));
+        bird.setFollowing(FlockDBHelper.b64DecodeDeserialize(birdobj.following));
+        bird.setUsersMuted(FlockDBHelper.b64DecodeDeserialize(birdobj.usersMuted));
+        bird.setUsersUnMuted(FlockDBHelper.b64DecodeDeserialize(birdobj.usersUnMuted));
+        bird.setUsersKeepUnMuted(FlockDBHelper.b64DecodeDeserialize(birdobj.usersKeepUnMuted));
+        return bird;
     }
 
 }
