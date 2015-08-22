@@ -103,6 +103,10 @@ public class BotHandler extends Thread {
         return BotHandler.database;
     }
     
+    public static FlockDBHelper getFlockDBHelper() {
+        return BotHandler.fdbhelper;
+    }
+    
     public static Flock getFlock(){
         return BotHandler.flock;
     }

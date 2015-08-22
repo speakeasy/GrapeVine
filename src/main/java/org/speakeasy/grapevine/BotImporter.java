@@ -11,6 +11,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.speakeasy.grapevine.flock.Bird;
 import org.speakeasy.grapevine.flock.Flock;
+import org.speakeasy.grapevine.flock.FlockDBHelper;
 import org.speakeasy.grapevine.flock.following.TwitterUser;
 import org.speakeasy.grapevine.flock.following.TwitterUserMap;
 
@@ -98,6 +99,8 @@ public class BotImporter {
         }
         Flock flock = bothandler.getFlock();
         flock.addBird(bird);
+        FlockDBHelper fdbhelp = new FlockDBHelper(database, flock);
+        fdbhelp.insertBirdToDB(bird);
     }
 
     private TwitterUserMap toUserMap(String usercsv) {
