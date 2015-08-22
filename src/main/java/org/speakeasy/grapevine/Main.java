@@ -38,6 +38,8 @@ public class Main implements Runnable {
             } else {
                 botHandler = new BotHandler(database);
             }
+        } else {
+            botHandler = new BotHandler(cwd.getAbsolutePath());
         }
         if (this.doImport) {
             BotImporter botimporter = new BotImporter(botHandler.getDatabase(), botHandler, fimport, isPyImport);

@@ -28,9 +28,13 @@ public class BotHandler extends Thread {
     public BotHandler(File database, File proxyList) {
         loadDatabase(database.getAbsolutePath());
     }
-
+    
     public BotHandler(File database) {
         loadDatabase(database.getAbsolutePath());
+    }
+
+    public BotHandler(String cwd) {
+        loadDatabase(new File(cwd));
     }
 
     public BotHandler() {
@@ -40,6 +44,14 @@ public class BotHandler extends Thread {
     private void loadDatabase(String db) {
         try {
             BotHandler.database = new SQLiteJDBC(db);
+        } catch (Exception ex) {
+            Logger.getLogger(BotHandler.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    private void loadDatabase(File cwd) {
+        try {
+            BotHandler.database = new SQLiteJDBC(cwd);
         } catch (Exception ex) {
             Logger.getLogger(BotHandler.class.getName()).log(Level.SEVERE, null, ex);
         }
