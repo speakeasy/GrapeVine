@@ -28,3 +28,16 @@ Longer term:
 * deeplearning4j neural network weighted markov statistical learning of some kind.
 * deeplearning4j neural network weighted distributed average random seed for markov uniqueness.
 
+
+requirements:
+maven 2 or 3
+official jdk 8
+sqlite-jdbc-3.8.11.1.jar
+
+instructions:
+
+compile: mvn clean install
+
+run: cd to target directory
+download sqlite-jdbc-3.8.11.1.jar to target directory
+java -cp ".:GrapeVine-0.1a-SNAPSHOT.jar:sqlite-jdbc-3.8.11.1.jar" org.speakeasy.grapevine.Main [args]
