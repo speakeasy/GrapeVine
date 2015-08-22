@@ -64,6 +64,8 @@ public class FlockDBHelper {
     
     public void initPs() {
         try {
+            CreateDatabase cdb = new CreateDatabase(this.database);
+            cdb.createDBTableBirds();
             psUpdateBird = conn.prepareStatement("UPDATE birds SET password = ?, email = ?, twitterid = ?, oauthtoken = ?, oauthsecret = ?, consumertoken = ?, consumersecret = ?, botname = ?, follow = ?, followgroup = ?, followed = ?, following = ?, usersmuted = ?, usersunmuted = ?, userskeepunmuted = ? WHERE botname = ?");
             psInsertBird = conn.prepareStatement("INSERT INTO birds (password, email, twitterid, oauthtoken, oauthsecret, consumertoken, consumersecret, botname, follow, followgroup, followed, following, usersmuted, usersunmuted, userskeepunmuted) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
         } catch (SQLException ex) {

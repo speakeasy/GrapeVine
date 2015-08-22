@@ -23,6 +23,7 @@ public class BotHandler extends Thread {
     private static HashMap<InetAddress, Integer> proxies = new HashMap();
     private static int queue = 0;
     private static int lastqueue = 0;
+    private static int processed = 0;
     private static boolean running = false;
 
     public BotHandler(File database, File proxyList) {
@@ -58,11 +59,15 @@ public class BotHandler extends Thread {
     }
 
     @Override
-    public void start() {
+    public void run() {
         
         try {
             if(database.conn == null || database.conn.isClosed()) {
-                BotHandler.database = new SQLiteJDBC(new File(System.getProperty("user.dir") + "/grapevineflock.sqlite"));
+                try {
+                    BotHandler.database = new SQLiteJDBC(new File(System.getProperty("user.dir") + "/grapevineflock.sqlite"));
+                } catch (Exception ex) {
+                    Logger.getLogger(BotHandler.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
             
             // INIT values
@@ -76,15 +81,20 @@ public class BotHandler extends Thread {
     }
 
     public void loop() {
+        running = true;
         while (running) {
-            if (queue == 0) {
+            if (queue <= 0) {
+                queue = 0;
                 try {
-                    Thread.sleep(2);
+                    Thread.sleep(20);
                 } catch (InterruptedException ex) {
                     Logger.getLogger(BotHandler.class.getName()).log(Level.SEVERE, null, ex);
                 }
+            } else {
+                // TODO
+                queue--;
+                processed++;
             }
-            // TODO
         }
 
     }
@@ -110,7 +120,9 @@ public class BotHandler extends Thread {
     }
 
     public int getNumBotsProcesses() {
-        return lastqueue - queue;
+        int psd = processed;
+        processed = 0;
+        return psd;
     }
 
     public static void quit() {

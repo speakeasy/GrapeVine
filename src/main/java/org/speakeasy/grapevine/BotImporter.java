@@ -63,19 +63,19 @@ public class BotImporter {
             line = fileLines.get(i++);
             if (line.startsWith("OAUTH_TOKEN")) {
                 // OAUTH_TOKEN:
-                bird.setOAuthToken(line.substring(12, line.length() + 1));
+                bird.setOAuthToken(line.substring(12, line.length()));
                 line = fileLines.get(i++);
                 // OAUTH_SECRET:
-                bird.setOAuthSecret(line.substring(13, line.length() + 1));
+                bird.setOAuthSecret(line.substring(13, line.length()));
                 line = fileLines.get(i++);
                 // CONSUMER_KEY:
-                bird.setConsumerToken(line.substring(13, line.length() + 1));
+                bird.setConsumerToken(line.substring(13, line.length()));
                 line = fileLines.get(i++);
                 // CONSUMER_SECRET:
-                bird.setConsumerSecret(line.substring(16, line.length() + 1));
+                bird.setConsumerSecret(line.substring(16, line.length()));
                 line = fileLines.get(i++);
                 // TWITTER_HANDLE:
-                bird.setName(line.substring(15, line.length() + 1));
+                bird.setName(line.substring(15, line.length()));
                 line = fileLines.get(i++);
                 // ALREADY_FOLLOWED_FILE:
                 ;
@@ -87,13 +87,13 @@ public class BotImporter {
                 ;
                 line = fileLines.get(i++);
                 // USERS_KEEP_FOLLOWING:
-                bird.setFollowGroup(toUserMap(line.substring(21, line.length() + 1)));
+                bird.setFollowGroup(toUserMap(line.substring(21, line.length())));
                 line = fileLines.get(i++);
                 // USERS_KEEP_UNMUTED:
-                bird.setUsersKeepUnMuted(toUserMap(line.substring(19, line.length() + 1)));
+                bird.setUsersKeepUnMuted(toUserMap(line.substring(19, line.length())));
                 line = fileLines.get(i++);
                 // USERS_KEEP_MUTED:
-                bird.setUsersMuted(toUserMap(line.substring(17, line.length() + 1)));
+                bird.setUsersMuted(toUserMap(line.substring(17, line.length())));
             }
         }
         Flock flock = bothandler.getFlock();
@@ -102,12 +102,17 @@ public class BotImporter {
 
     private TwitterUserMap toUserMap(String usercsv) {
         TwitterUserMap usermap = new TwitterUserMap();
-        TwitterUser user = null;
-        String[] users = usercsv.split(",");
-        int i = 0;
-        while(i < users.length) {
-            user = new TwitterUser(Integer.decode(users[i].replaceAll("[^0-9]", "")));
-            usermap.add(user);
+        if (usercsv != null) {
+            TwitterUser user = null;
+            String[] users = usercsv.split(",");
+            int i = 0;
+            while (i < users.length) {
+                if (users[i].length() >= 1) {
+                    user = new TwitterUser(Integer.decode(users[i]));
+                    usermap.add(user);
+                }
+                i++;
+            }
         }
         return usermap;
     }

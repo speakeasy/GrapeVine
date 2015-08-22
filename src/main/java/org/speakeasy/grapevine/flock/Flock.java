@@ -8,7 +8,7 @@ import java.util.HashMap;
  */
 public class Flock {
     private final Flock theflock = this;
-    private HashMap<Integer, Bird> birds;
+    private HashMap<Integer, Bird> birds = new HashMap();
     
     public Flock() {
         ;

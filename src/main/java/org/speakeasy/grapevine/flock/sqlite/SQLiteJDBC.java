@@ -24,8 +24,9 @@ public class SQLiteJDBC {
         ;
     }
 
-    public SQLiteJDBC(File cwd) {
+    public SQLiteJDBC(File cwd) throws Exception {
         sUrl = cwd.getAbsolutePath() + "/grapevineflocks.sqlite";
+        load(sDriver, sUrl);
     }
 
     public SQLiteJDBC(String sUrlToLoad) throws Exception {
@@ -50,7 +51,7 @@ public class SQLiteJDBC {
 
     public void setConnection() throws Exception {
         Class.forName(sDriver);
-        conn = DriverManager.getConnection(sUrl);
+        conn = DriverManager.getConnection("jdbc:sqlite:" + sUrl);
     }
 
     public Connection getConnection() {

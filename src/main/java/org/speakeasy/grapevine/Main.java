@@ -41,6 +41,7 @@ public class Main implements Runnable {
         } else {
             botHandler = new BotHandler(cwd.getAbsolutePath());
         }
+        botHandler.start();
         if (this.doImport) {
             BotImporter botimporter = new BotImporter(botHandler.getDatabase(), botHandler, fimport, isPyImport);
             botimporter.doImport();
@@ -209,7 +210,7 @@ public class Main implements Runnable {
     public void run() {
         long lastTime = System.nanoTime();
         double unprocessed = 0;
-        double nsPerTick = 1000000000.0 / 100;
+        double nsPerTick = 1000000000.0 / 10;
         int bots = 0;
         int ticks = 0;
         long lastTimer1 = System.currentTimeMillis();
